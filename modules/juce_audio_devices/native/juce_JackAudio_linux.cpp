@@ -591,9 +591,14 @@ public:
         hasScanned = true;
         inputNames.clear();
         outputNames.clear();
-
+#if JUCE_LINUX
         if (juce_libjackHandle == nullptr)  juce_libjackHandle = dlopen ("libjack.so.0", RTLD_LAZY);
         if (juce_libjackHandle == nullptr)  juce_libjackHandle = dlopen ("libjack.so",   RTLD_LAZY);
+#elif JUCE_MAC
+        if (juce_libjackHandle == nullptr)  juce_libjackHandle = dlopen ("libjack.dylib",   RTLD_LAZY);
+#elif JUCE_WINDOWS
+        if (juce_libjackHandle == nullptr)  juce_libjackHandle = dlopen ("libjack.dll",   RTLD_LAZY);
+#endif
         if (juce_libjackHandle == nullptr)  return;
 
         jack_status_t status = {};
