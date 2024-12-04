@@ -234,7 +234,7 @@ namespace juce
 #endif
 
 //==============================================================================
-#if (JUCE_LINUX || JUCE_BSD || JUCE_MACOS || JUCE_WINDOWS) && JUCE_JACK
+#if (JUCE_LINUX || JUCE_BSD || JUCE_MAC || JUCE_WINDOWS) && JUCE_JACK
   /* Got an include error here? If so, you've either not got jack-audio-connection-kit
      installed, or you've not got your paths set up correctly to find its header files.
 
@@ -244,8 +244,8 @@ namespace juce
      JUCE with low latency audio support, just set the JUCE_JACK flag to 0.
   */
   #include <jack/jack.h>
-  #include "native/juce_JackAudio_linux.cpp"
- #endif
+  #include "native/juce_JackAudio.cpp"
+#endif
 
 #if ! JUCE_SYSTEMAUDIOVOL_IMPLEMENTED
 namespace juce
