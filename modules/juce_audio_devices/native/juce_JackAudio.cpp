@@ -31,7 +31,7 @@ static void* juce_loadJackFunction (const char* const name)
         return nullptr;
 
 #if JUCE_WINDOWS
-    return GetProcAddress (static_cast<HMODULE>(juce_libjackHandle), name);
+    return GetProcAddress ((HMODULE) juce_libjackHandle, name);
 #else
     return dlsym (juce_libjackHandle, name);
 #endif
