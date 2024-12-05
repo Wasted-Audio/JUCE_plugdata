@@ -30,7 +30,12 @@ static void* juce_loadJackFunction (const char* const name)
     if (juce_libjackHandle == nullptr)
         return nullptr;
 
+#if JUCE_WINDOWS
+    return GetProcAddress (static_cast<HMODULE>(juce_libjackHandle), name);
+#else
     return dlsym (juce_libjackHandle, name);
+#endif
+
 }
 
 #define JUCE_DECL_JACK_FUNCTION(return_type, fn_name, argument_types, arguments)  \
@@ -597,7 +602,11 @@ public:
 #elif JUCE_MAC
         if (juce_libjackHandle == nullptr)  juce_libjackHandle = dlopen ("libjack.dylib",   RTLD_LAZY);
 #elif JUCE_WINDOWS
-        if (juce_libjackHandle == nullptr)  juce_libjackHandle = dlopen ("libjack.dll",   RTLD_LAZY);
+    #if JUCE_64BIT
+        if (juce_libjackHandle == nullptr)  juce_libjackHandle = LoadLibraryA ("libjack64.dll");
+    #else
+        if (juce_libjackHandle == nullptr)  juce_libjackHandle = LoadLibraryA ("libjack.dll");
+    #endif
 #endif
         if (juce_libjackHandle == nullptr)  return;
 
